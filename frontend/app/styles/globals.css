@@ -1,0 +1,54 @@
+@import "tailwindcss";
+/* styles/globals.css */
+@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap");
+
+body {
+  font-family: 'Comic Neue', cursive;
+  background-color: #f0f9ff;
+  color: #1e3a8a;
+}
+
+.title-font {
+  font-family: 'Fredoka One', cursive;
+  text-shadow: 3px 3px 0 #fbbf24;
+}
+
+.shape-card {
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.shape-card:hover {
+  transform: translateY(-10px) rotate(5deg);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+              0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 2s infinite;
+}
+
+.quiz-option {
+  transition: all 0.2s;
+}
+
+.quiz-option:hover {
+  transform: scale(1.05);
+}
+
+.correct {
+  background-color: #86efac !important;
+}
+
+.incorrect {
+  background-color: #fca5a5 !important;
+}
