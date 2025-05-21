@@ -1,6 +1,14 @@
 ## Getting Started
 
-First, run the development server:
+First, install npm latest:
+```bash
+npm i -g npm@latest
+```
+and after that
+```bash
+npm i
+```
+and  run development server:
 
 ```bash
 npm run dev
