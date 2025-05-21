@@ -1,6 +1,6 @@
 ## Getting Started
 
-First, Enter to destination folder such as frontend, backend or cms, for example we use frontend folder:
+First, Enter to destination folder such as frontend, backend or cms folder. for example we use frontend folder:
 ```bash
 cd TA-PBS-KING && cd frontend
 ```
