@@ -1,5 +1,6 @@
 @import "tailwindcss";
 /* styles/globals.css */
+
 @import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap");
 
 body {
@@ -34,7 +35,7 @@ body {
 }
 
 .animate-bounce {
-  animation: bounce 2s infinite;
+  animation: bounce 3s infinite;
 }
 
 .quiz-option {

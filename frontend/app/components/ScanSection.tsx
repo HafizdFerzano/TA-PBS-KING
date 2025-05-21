@@ -2,10 +2,7 @@
 
 export default function ScanSection() {
   return (
-    <section
-      id="scan"
-      className="py-16 px-4 bg-gradient-to-b from-blue-50 to-indigo-50"
-    >
+    <section id="scan" className="py-16 px-4 bg-gradient-to-b from-blue-50 to-indigo-50">
       <div className="container mx-auto">
         <h2 className="text-4xl font-bold mb-6 text-center title-font text-blue-800">
           AR Shape Scanner
@@ -40,9 +37,7 @@ export default function ScanSection() {
 
           <div className="lg:w-1/2">
             <div className="bg-white p-6 rounded-xl shadow-lg">
-              <h3 className="text-2xl font-bold mb-4 text-blue-800">
-                How to Use AR Scanner
-              </h3>
+              <h3 className="text-2xl font-bold mb-4 text-blue-800">How to Use AR Scanner</h3>
               <ol className="space-y-4">
                 {steps.map((step, index) => (
                   <li key={index} className="flex items-start">
@@ -98,39 +93,36 @@ export default function ScanSection() {
 }
 
 const steps = [
-  "Print out or display the Hiro marker on another device",
+  'Print out or display the Hiro marker on another device',
   "Point your camera at the marker (make sure it's well lit)",
-  "Watch as the shape appears in 3D on your screen!",
-  "Try rotating the marker to see the shape from different angles",
+  'Watch as the shape appears in 3D on your screen!',
+  'Try rotating the marker to see the shape from different angles',
 ];
 
 const features = [
   {
-    title: "Interactive Features",
+    title: 'Interactive Features',
     items: [
-      { icon: "fas fa-hand-pointer", text: "Tap to hear shape name" },
-      { icon: "fas fa-rotate-right", text: "Rotate marker to see all sides" },
-      { icon: "fas fa-expand", text: "Move closer to zoom in" },
+      { icon: 'fas fa-hand-pointer', text: 'Tap to hear shape name' },
+      { icon: 'fas fa-rotate-right', text: 'Rotate marker to see all sides' },
+      { icon: 'fas fa-expand', text: 'Move closer to zoom in' },
     ],
   },
   {
-    title: "Supported Shapes",
+    title: 'Supported Shapes',
     items: [
-      { icon: "", text: "Square" },
-      { icon: "", text: "Triangle" },
-      { icon: "", text: "Circle" },
-      { icon: "", text: "Rectangle" },
+      { icon: '', text: 'Square' },
+      { icon: '', text: 'Triangle' },
+      { icon: '', text: 'Circle' },
+      { icon: '', text: 'Rectangle' },
     ],
   },
   {
-    title: "Device Compatibility",
+    title: 'Device Compatibility',
     items: [
-      {
-        icon: "fab fa-android text-green-500",
-        text: "Android phones & tablets",
-      },
-      { icon: "fab fa-apple text-gray-500", text: "iPhones & iPads" },
-      { icon: "fas fa-laptop text-blue-500", text: "Computers with webcam" },
+      { icon: 'fab fa-android text-green-500', text: 'Android phones & tablets' },
+      { icon: 'fab fa-apple text-gray-500', text: 'iPhones & iPads' },
+      { icon: 'fas fa-laptop text-blue-500', text: 'Computers with webcam' },
     ],
   },
 ];

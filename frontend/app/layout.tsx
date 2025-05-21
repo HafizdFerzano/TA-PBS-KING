@@ -24,6 +24,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+            <script src="https://cdn.jsdelivr.net/npm/aframe@1.4.2/dist/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ar.js@3.4.2/dist/ar.js"></script>
+      </head>
+
       <body>{children}</body>
     </html>
   );

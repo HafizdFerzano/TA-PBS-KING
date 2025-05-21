@@ -178,19 +178,19 @@ function getDescription(shape: string) {
 
 const examples = [
   {
-    src: "https://cdn.pixabay.com/photo/2013/07/13/10/51/square-157826_1280.png",
+    src: "/windows.png",
     label: "Windows",
   },
   {
-    src: "https://cdn.pixabay.com/photo/2013/07/13/10/51/pizza-slice-157821_1280.png",
+    src: "/pizza-slice.png",
     label: "Pizza Slices",
   },
   {
-    src: "https://cdn.pixabay.com/photo/2013/07/13/10/51/clock-157923_1280.png",
+    src: "/clock.png",
     label: "Clocks",
   },
   {
-    src: "https://cdn.pixabay.com/photo/2013/07/13/10/51/door-157932_1280.png",
+    src: "/door.png",
     label: "Doors",
   },
 ];
