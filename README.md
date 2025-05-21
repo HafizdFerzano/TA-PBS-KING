@@ -1,6 +1,10 @@
 ## Getting Started
 
-First, install npm latest:
+First, 
+```bash
+cd TA-PBS-KING && cd frontend
+```
+before run the server, npm latest must be installed:
 ```bash
 npm i -g npm@latest
 ```
