@@ -9,7 +9,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-blue-600 text-white p-4 shadow-lg">
+    <nav className="bg-blue-600 text-white p-4 shadow-lg px-20">
       <div className="container mx-auto flex justify-between items-center">
         <a href="#" className="text-2xl font-bold title-font">
           Shape Explorer
