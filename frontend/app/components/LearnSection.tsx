@@ -2,6 +2,8 @@
 "use client";
 
 import { useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faVolumeUp } from "@fortawesome/free-solid-svg-icons/faVolumeUp";
 
 export default function LearnSection() {
   useEffect(() => {
@@ -155,7 +157,7 @@ function ShapeCard({
         className={`mt-4 bg-${color}-500 hover:bg-${color}-600 text-white py-2 px-4 rounded-full text-sm transition-all`}
         onClick={() => (window as any).playAudio(shape)}
       >
-        <i className="fas fa-volume-up mr-1"></i> Hear About {title}
+        <FontAwesomeIcon icon={faVolumeUp} className="w-6"/> Hear About {title}
       </button>
     </div>
   );
