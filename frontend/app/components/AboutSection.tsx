@@ -12,7 +12,7 @@ export default function AboutSection() {
         <div className="flex flex-col lg:flex-row gap-12 items-center">
           <div className="lg:w-1/2">
             <Image
-              src="https://cdn.pixabay.com/photo/2017/01/31/17/17/children-2025821_1280.png"
+              src="/assets/kids.png"
               alt="Kids learning"
               width={400}
               height={300}
