@@ -6,9 +6,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "cdn.pixabay.com",
-        port: "",
-        pathname: "/**", // mengizinkan semua path dari cdn.pixabay.com
+        hostname: "vijguqckovtbmvggckvj.supabase.co",
+        pathname: "/storage/v1/object/public/**",
       },
     ],
   },
