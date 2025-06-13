@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   // Daftar rute API yang ingin diproteksi oleh JWT
-  const protectedPaths = ["/api/users"];
+  const protectedPaths = ["/api/users", "/api/dashboard", "/api/admin"];
 
   // CORS config
   const headers = new Headers();
