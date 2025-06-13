@@ -34,6 +34,42 @@ export function middleware(request: NextRequest) {
     });
   }
 
+  // 🔒 Proteksi JWT untuk endpoint tertentu
+  if (protectedPaths.includes(pathname)) {
+    const authHeader = request.headers.get("authorization");
+    let token = authHeader?.split(" ")[1];
+
+    // ✅ Tambahkan fallback: ambil token dari cookie jika tidak ada di header
+    if (!token) {
+      token = request.cookies.get("token")?.value;
+    }
+
+    if (!token) {
+      return new NextResponse(
+        JSON.stringify({
+          error: "Akses ditolak. Token tidak ditemukan. Silakan login.",
+        }),
+        {
+          status: 401,
+          headers,
+        }
+      );
+    }
+
+    try {
+      jwt.verify(token, process.env.JWT_SECRET!);
+    } catch {
+      return new NextResponse(
+        JSON.stringify({
+          error: "Token tidak valid atau kedaluwarsa. Silakan login ulang.",
+        }),
+        {
+          status: 401,
+          headers,
+        }
+      );
+    }
+  }
 
   // ✅ Lanjutkan permintaan jika lolos semua validasi
   const response = NextResponse.next();
