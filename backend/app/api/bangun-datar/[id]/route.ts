@@ -9,14 +9,19 @@ function getFilePathFromUrl(publicUrl: string, bucket: string): string | null {
   return match ? match[1] : null;
 }
 
-// ✅ PUT: Update shape by ID
 export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
     const id = params.id;
-    const body = await req.json();
+    const formData = await req.formData();
+
+    const shape = formData.get("shape")?.toString() || "";
+    const title = formData.get("title")?.toString() || "";
+    const color = formData.get("color")?.toString() || "";
+    const formulaArea = formData.get("formulaArea")?.toString() || "";
+    const formulaPerimeter = formData.get("formulaPerimeter")?.toString() || "";
 
     const existing = await db.shape.findUnique({ where: { id } });
     if (!existing) {
@@ -32,48 +37,71 @@ export async function PUT(
       );
     }
 
-    const bucket = "shape-bucket"; // ganti sesuai nama bucket kamu
+    const bucket = "shape-assets";
 
-    // Hapus file lama jika URL content/audio berubah
-    if (body.content && body.content !== existing.content) {
-      const oldContentPath = getFilePathFromUrl(existing.content, bucket);
-      if (oldContentPath) {
-        await supabase.storage.from(bucket).remove([oldContentPath]);
-      }
+    // Proses upload file content (image)
+    let contentUrl = existing.content;
+    const contentFile = formData.get("content") as File | null;
+    if (contentFile && contentFile.size > 0) {
+      const contentArrayBuffer = await contentFile.arrayBuffer();
+      const contentExt = contentFile.name.split(".").pop();
+      const contentPath = `content-${Date.now()}.${contentExt}`;
+      const { data, error } = await supabase.storage
+        .from(bucket)
+        .upload(contentPath, contentArrayBuffer, {
+          contentType: contentFile.type,
+        });
+      if (error) throw error;
+      contentUrl = supabase.storage.from(bucket).getPublicUrl(contentPath)
+        .data.publicUrl;
+
+      const oldPath = getFilePathFromUrl(existing.content, bucket);
+      if (oldPath) await supabase.storage.from(bucket).remove([oldPath]);
     }
 
-    if (body.audio && body.audio !== existing.audio) {
-      const oldAudioPath = getFilePathFromUrl(existing.audio, bucket);
-      if (oldAudioPath) {
-        await supabase.storage.from(bucket).remove([oldAudioPath]);
-      }
+    // Proses upload file audio
+    let audioUrl = existing.audio;
+    const audioFile = formData.get("audio") as File | null;
+    if (audioFile && audioFile.size > 0) {
+      const audioArrayBuffer = await audioFile.arrayBuffer();
+      const audioExt = audioFile.name.split(".").pop();
+      const audioPath = `audio-${Date.now()}.${audioExt}`;
+      const { data, error } = await supabase.storage
+        .from(bucket)
+        .upload(audioPath, audioArrayBuffer, {
+          contentType: audioFile.type,
+        });
+      if (error) throw error;
+      audioUrl = supabase.storage.from(bucket).getPublicUrl(audioPath)
+        .data.publicUrl;
+
+      const oldPath = getFilePathFromUrl(existing.audio, bucket);
+      if (oldPath) await supabase.storage.from(bucket).remove([oldPath]);
     }
 
     const updated = await db.shape.update({
       where: { id },
       data: {
-        shape: body.shape,
-        title: body.title,
-        color: body.color,
-        formulaArea: body.formulaArea,
-        formulaPerimeter: body.formulaPerimeter,
-        content: body.content,
-        audio: body.audio,
+        shape,
+        title,
+        color,
+        formulaArea,
+        formulaPerimeter,
+        content: contentUrl,
+        audio: audioUrl,
       },
     });
 
-    return NextResponse.json(
-      {
-        metadata: {
-          error: 0,
-          status: 200,
-          message: "Berhasil memperbarui data shape.",
-        },
-        data: updated,
+    return NextResponse.json({
+      metadata: {
+        error: 0,
+        status: 200,
+        message: "Berhasil memperbarui shape.",
       },
-      { status: 200 }
-    );
-  } catch (error: any) {
+      data: updated,
+    });
+  } catch (err: any) {
+    console.error("[PUT SHAPE ERROR]", err);
     return NextResponse.json(
       {
         metadata: {
@@ -81,7 +109,7 @@ export async function PUT(
           status: 500,
           message: "Gagal memperbarui shape.",
         },
-        error: error?.message || error,
+        error: err.message,
       },
       { status: 500 }
     );
@@ -110,7 +138,7 @@ export async function DELETE(
       );
     }
 
-    const bucket = "shape-bucket";
+    const bucket = "shape-assets";
 
     const contentPath = getFilePathFromUrl(existing.content, bucket);
     const audioPath = getFilePathFromUrl(existing.audio, bucket);

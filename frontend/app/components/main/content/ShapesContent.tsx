@@ -19,7 +19,7 @@ function ShapesContent() {
   const fetchShapes = async () => {
     try {
       const res = await axios.get(`http://localhost:3001/api/bangun-datar`);
-      setShapes(res.data);
+      setShapes(res.data.data);
     } catch (error: unknown) {
       console.error("Gagal ambil data shapes:", error);
     }

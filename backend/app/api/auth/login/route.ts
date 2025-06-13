@@ -67,25 +67,46 @@ export async function POST(req: Request) {
 
     // Buat token JWT
     const token = jwt.sign(
-      { id: user.id, nama: user.nama },
+      {
+        id: user.id,
+        nama: user.nama,
+      },
       process.env.JWT_SECRET!,
       { expiresIn: "1d" }
     );
 
-    // Respon sukses
+    if (user.role == "admin") {
+      return NextResponse.json(
+        {
+          metadata: {
+            error: 0,
+            message: "Login berhasil",
+            status: 200,
+          },
+          data: {
+            token,
+            role: "admin",
+          },
+        },
+        { status: 200 }
+      );
+    }
+
     return NextResponse.json(
       {
         metadata: {
-          error: 0,
-          message: "Login berhasil",
-          status: 200,
+          error: 1,
+          message: "Hak akses ditolak, Anda bukan Admin!",
+          status: 409,
         },
         data: {
-          token,
+          token
         },
       },
-      { status: 200 }
+      { status: 409 }
     );
+
+    // Respon sukses
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json(

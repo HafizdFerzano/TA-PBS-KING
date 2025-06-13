@@ -33,8 +33,6 @@ export async function GET(req: NextRequest) {
   }
 }
 
-
-
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -97,6 +95,8 @@ export async function POST(req: NextRequest) {
         upsert: false,
       });
 
+    console.error("UPLOAD Content ERROR:", contentError);
+
     if (contentError) {
       return NextResponse.json(
         {
@@ -122,6 +122,8 @@ export async function POST(req: NextRequest) {
         contentType: audioFile.type,
         upsert: false,
       });
+
+    console.error("UPLOAD SHAPE ERROR:", audioError);
 
     if (audioError) {
       return NextResponse.json(
