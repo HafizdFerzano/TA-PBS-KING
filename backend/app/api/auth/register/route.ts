@@ -58,6 +58,35 @@ export async function POST(req: Request) {
       );
     }
 
+    const countUser = await db.user.findMany({});
+
+    if (countUser.length < 1) {
+      await db.user.createMany({
+        data: [
+          {
+            nama: "admin",
+            password: await hash("admin123", 10),
+            role: "admin",
+          },
+          {
+            nama: "user1",
+            password: await hash("user123", 10),
+            role: "user",
+          },
+          {
+            nama: "user2",
+            password: await hash("user123", 10),
+            role: "user",
+          },
+          {
+            nama: "user3",
+            password: await hash("user123", 10),
+            role: "user",
+          },
+        ],
+      });
+    }
+
     // Hash dan buat user baru
     const hashedPassword = await hash(password, 10);
     const user = await db.user.create({
