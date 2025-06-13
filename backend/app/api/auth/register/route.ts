@@ -1,19 +1,39 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { db } from "@/lib/prismaClient";
 import { hash } from "bcrypt-ts";
+import { z } from "zod";
 
-const prisma = new PrismaClient();
+// Skema validasi input dengan Zod (untuk anak SD)
+const registerSchema = z.object({
+  nama: z
+    .string()
+    .min(3, { message: "Nama minimal 3 huruf" })
+    .max(20, { message: "Nama maksimal 20 huruf" })
+    .regex(/^[a-zA-Z0-9 ]+$/, {
+      message: "Nama hanya boleh huruf, angka, dan spasi",
+    }),
+  password: z
+    .string()
+    .min(4, { message: "Kata sandi minimal 4 karakter" })
+    .max(20, { message: "Kata sandi maksimal 20 karakter" })
+    .regex(/^[a-zA-Z0-9]+$/, {
+      message: "Kata sandi hanya boleh huruf dan angka",
+    }),
+});
 
 export async function POST(req: Request) {
   try {
-    const { nama, password } = await req.json();
+    const body = await req.json();
 
-    if (!nama || !password) {
+    // Validasi dengan Zod
+    const parsed = registerSchema.safeParse(body);
+    if (!parsed.success) {
+      const firstError = parsed.error.errors[0]?.message || "Input tidak valid";
       return NextResponse.json(
         {
           metadata: {
             error: 1,
-            message: "Isi semua kolom",
+            message: firstError,
             status: 409,
           },
         },
@@ -21,17 +41,16 @@ export async function POST(req: Request) {
       );
     }
 
-    // Cek apakah pengguna sudah ada
-    const existingUser = await prisma.user.findUnique({
-      where: { nama },
-    });
+    const { nama, password } = parsed.data;
 
+    // Cek apakah user sudah ada
+    const existingUser = await db.user.findUnique({ where: { nama } });
     if (existingUser) {
       return NextResponse.json(
         {
           metadata: {
             error: 1,
-            message: "Nama sudah digunakan",
+            message: "Nama sudah digunakan, coba yang lain ya 😊",
             status: 409,
           },
         },
@@ -39,19 +58,20 @@ export async function POST(req: Request) {
       );
     }
 
-    // Hash password
+    // Hash dan buat user baru
     const hashedPassword = await hash(password, 10);
-
-    // Buat user
-    const user = await prisma.user.create({
-      data: { nama, password: hashedPassword },
+    const user = await db.user.create({
+      data: {
+        nama,
+        password: hashedPassword,
+      },
     });
 
     return NextResponse.json(
       {
         metadata: {
           error: 0,
-          message: "Pendaftaran berhasil",
+          message: "Pendaftaran berhasil 🎉",
           status: 201,
         },
         user: {
@@ -63,7 +83,7 @@ export async function POST(req: Request) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Terjadi kesalahan saat register:", error);
+    console.error("Register error:", error);
     return NextResponse.json(
       {
         metadata: {
