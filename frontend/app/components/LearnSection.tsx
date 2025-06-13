@@ -25,14 +25,12 @@ export default function LearnSection() {
   const fetchShapes = async () => {
     try {
       const res = await axios.get(`http://localhost:3001/api/bangun-datar`);
-      setShapes(res.data);
+      setShapes(res.data.data);
     } catch (err) {
       console.error("Gagal ambil data shapes:", err);
     }
   };
 
-  // useEffect(() => {
-  // Function to play audio with alert
   useEffect(() => {
     fetchShapes();
 

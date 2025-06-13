@@ -4,13 +4,17 @@ import jwt from "jsonwebtoken";
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  // Daftar rute API yang ingin diproteksi oleh JWT
-  const protectedPaths = ["/api/users"];
+  // Rute yang butuh proteksi token
+  const protectedPaths = [ "/api/dashboard", "/api/admin"];
 
-  // CORS config
+  // Setup CORS
   const headers = new Headers();
   const origin = request.headers.get("origin");
-  const allowedOrigins = ["http://localhost:3000", "http://localhost:3001"];
+  const allowedOrigins = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://localhost:3002",
+  ];
 
   if (origin && allowedOrigins.includes(origin)) {
     headers.set("Access-Control-Allow-Origin", origin);
@@ -26,7 +30,7 @@ export function middleware(request: NextRequest) {
   );
   headers.set("Access-Control-Allow-Credentials", "true");
 
-  // Handle preflight (OPTIONS)
+  // ✅ Handle preflight request
   if (request.method === "OPTIONS") {
     return new NextResponse(null, {
       status: 204,
@@ -34,12 +38,12 @@ export function middleware(request: NextRequest) {
     });
   }
 
-  // 🔒 Proteksi JWT untuk endpoint tertentu
+  // 🔒 Cek token jika masuk ke protectedPaths
   if (protectedPaths.includes(pathname)) {
     const authHeader = request.headers.get("authorization");
     let token = authHeader?.split(" ")[1];
 
-    // ✅ Tambahkan fallback: ambil token dari cookie jika tidak ada di header
+    // Coba ambil dari cookies jika tidak ada di header
     if (!token) {
       token = request.cookies.get("token")?.value;
     }
@@ -58,7 +62,7 @@ export function middleware(request: NextRequest) {
 
     try {
       jwt.verify(token, process.env.JWT_SECRET!);
-    } catch {
+    } catch (err) {
       return new NextResponse(
         JSON.stringify({
           error: "Token tidak valid atau kedaluwarsa. Silakan login ulang.",
@@ -71,13 +75,13 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  // ✅ Lanjutkan permintaan jika lolos semua validasi
+  // ✅ Lanjutkan permintaan
   const response = NextResponse.next();
   headers.forEach((value, key) => response.headers.set(key, value));
   return response;
 }
 
-// Middleware hanya aktif untuk semua route API
+// Middleware aktif untuk semua route API
 export const config = {
   matcher: ["/api/:path*"],
 };

@@ -19,7 +19,7 @@ function QrScanner() {
     const path = "qr-ar";
     try {
       const res = await axios.get(`http://localhost:3001/api/${path}`);
-      setQr(res.data);
+      setQr(res.data.data);
     } catch (error: unknown) {
       console.error("Gagal ambil data qr:", error);
     }

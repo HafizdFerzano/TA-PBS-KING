@@ -61,7 +61,7 @@ export default function RegisterPage() {
         });
       } catch (error: any) {
         const message =
-          error?.response?.data?.error ||
+          error?.response?.data?.metadata?.message ||
           "Pendaftaran gagal. Coba lagi nanti ya 😊";
 
         MySwal.fire({

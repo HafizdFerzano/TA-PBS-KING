@@ -14,7 +14,7 @@ export default function LoginPage() {
   const nameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const loginButtonRef = useRef<HTMLButtonElement>(null);
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     const handleLogin = async () => {
@@ -40,11 +40,10 @@ export default function LoginPage() {
             password: password,
           }
         );
- 
+
         const { token } = response.data;
         // document.cookie = `token=${token}; path=/; max-age=86400; SameSite=Lax; Secure`;
         document.cookie = `token=${token}; path=/; max-age=86400; SameSite=Lax`;
-
 
         MySwal.fire({
           title: `Halo, ${nama}!`,
@@ -53,12 +52,12 @@ export default function LoginPage() {
           confirmButtonColor: "#facc15",
           confirmButtonText: "Ayo Belajar!",
         }).then(() => {
-          router.replace('/dashboard')
+          router.replace("/dashboard");
         });
       } catch (error: any) {
         const message =
-          error?.response?.data?.error ||
-          "Login gagal. Pastikan nama dan kata sandi benar.";
+          error?.response?.data?.metadata?.message ||
+          "Pastikan nama dan kata sandi benar.";
 
         MySwal.fire({
           title: "Login Gagal 😢",
