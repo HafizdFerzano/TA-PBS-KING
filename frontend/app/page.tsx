@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <main className="px-20">
+      <main>
         <HomeSection />
         <LearnSection />
         <ScanSection />

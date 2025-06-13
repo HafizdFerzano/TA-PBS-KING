@@ -12,7 +12,7 @@ export default function AboutSection() {
         <div className="flex flex-col lg:flex-row gap-12 items-center">
           <div className="lg:w-1/2">
             <Image
-              src="https://cdn.pixabay.com/photo/2017/01/31/17/17/children-2025821_1280.png"
+              src="/assets/kids.png"
               alt="Kids learning"
               width={400}
               height={300}
@@ -102,21 +102,21 @@ export default function AboutSection() {
 
 const team = [
   {
-    initials: "JD",
-    name: "Jane Doe",
-    role: "Educational Designer",
-    description: "Creating fun learning experiences for kids",
+    initials: "HF",
+    name: "Hafidz",
+    role: "Frontend",
+    description: "Creating Display Website",
   },
   {
-    initials: "AS",
-    name: "Alex Smith",
-    role: "AR Developer",
-    description: "Bringing shapes to life with technology",
+    initials: "RV",
+    name: "rhivo9",
+    role: "Backend",
+    description: "Creating Of API",
   },
   {
-    initials: "MJ",
-    name: "Maria Johnson",
-    role: "Elementary Teacher",
-    description: "Ensuring content aligns with curriculum",
+    initials: "RY",
+    name: "ryandika",
+    role: "CMS",
+    description: "Dashboard management",
   },
 ];

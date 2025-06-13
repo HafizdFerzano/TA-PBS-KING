@@ -1,7 +1,7 @@
 // app/components/QuizSection.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect,useRef } from "react";
 
 const quizQuestions = [
   {
@@ -43,18 +43,53 @@ const quizQuestions = [
   },
 ];
 
+//  File suara di public/sounds/
+const SOUND_CORRECT = "/sounds/correct.mp3";
+const SOUND_WRONG = "/sounds/wrong.mp3";
+const SOUND_COMPLETE = "/sounds/complete.mp3";
+
 export default function QuizSection() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [volume, setVolume] = useState(0.7); // Default volume 70%
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Inisialisasi audio
+  useEffect(() => {
+    audioRef.current = new Audio();
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
+  const playSound = (soundFile: string) => {
+    if (audioRef.current) {
+      audioRef.current.src = soundFile;
+      audioRef.current.volume = volume;
+      audioRef.current
+        .play()
+        .catch((e) => console.log("Autoplay prevented:", e));
+    }
+  };
 
   const current = quizQuestions[currentQuestionIndex];
 
   const handleAnswer = (answer: string) => {
     setSelectedAnswer(answer);
     setShowFeedback(true);
-    if (answer === current.correct) setScore(score + 1);
+
+    if (answer === current.correct) {
+      setScore(score + 1);
+      playSound(SOUND_CORRECT);
+    } else {
+      playSound(SOUND_WRONG);
+    }
   };
 
   const nextQuestion = () => {
@@ -69,6 +104,13 @@ export default function QuizSection() {
     setScore(0);
     setShowFeedback(false);
   };
+
+  // Mainkan suara saat kuis selesai
+  useEffect(() => {
+    if (currentQuestionIndex >= quizQuestions.length) {
+      playSound(SOUND_COMPLETE);
+    }
+  }, [currentQuestionIndex]);
 
   if (currentQuestionIndex >= quizQuestions.length) {
     const percentage = (score / quizQuestions.length) * 100;
@@ -104,6 +146,7 @@ export default function QuizSection() {
 
   return (
     <section id="quiz" className="py-16 px-4 bg-blue-800 text-white">
+      
       <div className="container mx-auto">
         <h2 className="text-4xl font-bold mb-6 text-center title-font text-yellow-300">
           Shape Challenge!
@@ -114,7 +157,23 @@ export default function QuizSection() {
 
         <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden text-gray-800">
           <div className="bg-blue-600 p-4 text-white">
-            <h3 className="text-xl font-bold">Quiz Time</h3>
+            {/* Kontrol Volume */}
+            <div className="flex  mb-4 justify-between items-center">
+              <h3 className="text-xl font-bold">Quiz Time</h3>
+              <div>
+                <span className="mr-2 text-yellow-300">🔊</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  value={volume}
+                  onChange={(e) => setVolume(parseFloat(e.target.value))}
+                  className="w-24 accent-yellow-400"
+                  aria-label="Volume control"
+                />
+              </div>
+            </div>
             <div className="flex justify-between items-center mt-2">
               <span className="text-sm text-blue-100">
                 Question {currentQuestionIndex + 1} of {quizQuestions.length}
@@ -169,6 +228,11 @@ export default function QuizSection() {
             )}
           </div>
         </div>
+        {/* {showFeedback && selectedAnswer === current.correct && (
+          <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none animate-ping">
+            <div className="text-9xl text-yellow-300 opacity-70">✨</div>
+          </div>
+        )} */}
       </div>
     </section>
   );

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Fractured Triangle
+* source:	https://sketchfab.com/3d-models/fractured-triangle-3855a658364a41b6a80130c42cc466e1
+* author:	Tallahasseessahallat (https://sketchfab.com/Tallahasseessahallat)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Fractured Triangle" (https://sketchfab.com/3d-models/fractured-triangle-3855a658364a41b6a80130c42cc466e1) by Tallahasseessahallat (https://sketchfab.com/Tallahasseessahallat) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
