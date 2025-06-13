@@ -3,95 +3,118 @@ import { supabase } from "@/lib/supabaseClient";
 import { db } from "@/lib/prismaClient";
 import { randomUUID } from "crypto";
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
   try {
-    const check = db.qrArCode.findMany({});
+    const existing = await db.qrArCode.findMany();
 
-    if ((await check).length < 1) {
+    if (existing.length < 1) {
       await db.qrArCode.createMany({
         data: [
-          {
-            shape: "square",
-            image: "/assets/qr/square.png",
-          },
-          {
-            shape: "triangle",
-            image: "/assets/qr/triangle.png",
-          },
-          {
-            shape: "circle",
-            image: "/assets/qr/circle.png",
-          },
-          {
-            shape: "rectangle",
-            image: "/assets/qr/rectangle.png",
-          },
+          { shape: "square", image: "/assets/qr/square.png" },
+          { shape: "triangle", image: "/assets/qr/triangle.png" },
+          { shape: "circle", image: "/assets/qr/circle.png" },
+          { shape: "rectangle", image: "/assets/qr/rectangle.png" },
         ],
       });
     }
 
-    //   await db.shape.deleteMany({})
+    const data = await db.qrArCode.findMany();
 
-    const qrarcode = await db.qrArCode.findMany();
-    return NextResponse.json(qrarcode, { status: 200 });
-  } catch (error: unknown) {
-    return NextResponse.json({
-      status: 500,
-    });
+    return NextResponse.json(
+      {
+        metadata: {
+          error: 0,
+          status: 200,
+          message: "Berhasil mengambil data QR AR Code.",
+        },
+        data,
+      },
+      { status: 200 }
+    );
+  } catch (error: any) {
+    return NextResponse.json(
+      {
+        metadata: {
+          error: 1,
+          status: 500,
+          message: "Gagal mengambil data QR AR Code.",
+          detail: error?.message || error,
+        },
+      },
+      { status: 500 }
+    );
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
-
     const shape = formData.get("shape") as string;
+    const imageFile = formData.get("image") as File;
 
-    // const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1 MB
-    const MAX_FILE_SIZE = 500 * 1024; // 5 KB
+    const MAX_FILE_SIZE = 500 * 1024; // 500KB
+    const bucket = "qr-ar-image";
 
-    const gambar = formData.get("image") as File;
-
-    if (gambar.size > MAX_FILE_SIZE) {
+    // Validasi field
+    if (!shape || !imageFile) {
       return NextResponse.json(
         {
           metadata: {
             error: 1,
-            message: "Ukuran file terlalu besar. Maksimal 1MB.",
+            status: 400,
+            message: "Field 'shape' dan 'image' wajib diisi.",
+          },
+        },
+        { status: 400 }
+      );
+    }
+
+    // Validasi ukuran file
+    if (imageFile.size > MAX_FILE_SIZE) {
+      return NextResponse.json(
+        {
+          metadata: {
+            error: 1,
             status: 409,
+            message: "Ukuran file terlalu besar. Maksimal 500KB.",
           },
         },
         { status: 409 }
       );
     }
 
-    const buffer = await gambar.arrayBuffer();
+    // Upload ke Supabase Storage
+    const buffer = await imageFile.arrayBuffer();
     const path = `qr/${randomUUID()}.jpg`;
-    const bucket = "qr-ar-image";
 
     const { error: uploadError } = await supabase.storage
       .from(bucket)
       .upload(path, buffer, {
         upsert: false,
-        contentType: gambar.type,
+        contentType: imageFile.type,
       });
 
     if (uploadError) {
-      return NextResponse.json({
-        metadata: {
-          error: 1,
-          message: `gagal upload qr ${uploadError}`,
+      return NextResponse.json(
+        {
+          metadata: {
+            error: 1,
+            status: 500,
+            message: "Gagal upload ke Supabase Storage.",
+            detail: uploadError.message,
+          },
         },
-      });
+        { status: 500 }
+      );
     }
 
     const { data } = supabase.storage.from(bucket).getPublicUrl(path);
     const publicUrl = data.publicUrl;
 
-    // Simpan menu ke database
-    const qr_ar = await db.qrArCode.create({
+    // Simpan ke database
+    const qrAr = await db.qrArCode.create({
       data: {
-        shape: shape,
+        shape,
         image: publicUrl,
       },
     });
@@ -101,26 +124,23 @@ export async function POST(req: NextRequest) {
         metadata: {
           error: 0,
           status: 201,
-          message: `Berhasil upload qr`,
+          message: "Berhasil upload dan simpan QR AR Code.",
         },
-        data: qr_ar,
+        data: qrAr,
       },
-      {
-        status: 201,
-      }
+      { status: 201 }
     );
-  } catch (error: unknown) {
+  } catch (error: any) {
     return NextResponse.json(
       {
         metadata: {
           error: 1,
           status: 500,
-          message: `Gagal upload qr`,
+          message: "Terjadi kesalahan saat mengupload QR AR Code.",
+          detail: error?.message || error,
         },
       },
-      {
-        status: 500,
-      }
+      { status: 500 }
     );
   }
 }
