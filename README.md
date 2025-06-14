@@ -5,6 +5,8 @@
 - **Frontend:** [https://shape-explorer-king.vercel.app](https://shape-explorer-king.vercel.app)
 - **CMS (Admin):** [https://shape-explorer-cms.vercel.app](https://shape-explorer-cms.vercel.app)
 - **Backend API:** [https://backend-shape-explorer.vercel.app](https://backend-shape-explorer.vercel.app)
+- **Postman Dokumentasi:** [https://rhivo-2315898.postman.co/workspace/KING-PBS](https://rhivo-2315898.postman.co/workspace/KING-PBS~6a68ff5e-d1d5-4e20-8452-d97e15b08df3/collection/45884833-0e3a8c66-0057-4324-b908-b54b0eaf6c6b?action=share&creator=45884833)
+- **Publish API Postman:** [https://documenter.getpostman.com/view/43261593/2sB2x6nCfP](https://documenter.getpostman.com/view/43261593/2sB2x6nCfP)
 
 ---
 
