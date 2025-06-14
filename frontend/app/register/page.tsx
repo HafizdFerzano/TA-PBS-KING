@@ -43,10 +43,13 @@ export default function RegisterPage() {
       }
 
       try {
-        await axios.post("http://localhost:3001/api/auth/register", {
-          nama,
-          password,
-        });
+        await axios.post(
+          "https://backend-shape-explorer.vercel.app/api/auth/register",
+          {
+            nama,
+            password,
+          }
+        );
 
         MySwal.fire({
           title: `Yay, ${nama}! 🎉`,

@@ -34,7 +34,7 @@ export default function AdminLoginPage() {
 
       try {
         const response = await axios.post(
-          "http://localhost:3001/api/auth/login",
+          "https://backend-shape-explorer.vercel.app/api/auth/login",
           {
             nama,
             password,
@@ -63,7 +63,6 @@ export default function AdminLoginPage() {
           confirmButtonText: "Masuk Dashboard",
         }).then(() => {
           setTimeout(() => {
-
             router.replace("/admin/dashboard");
           }, 100); // delay 100ms agar cookie tersimpan
         });

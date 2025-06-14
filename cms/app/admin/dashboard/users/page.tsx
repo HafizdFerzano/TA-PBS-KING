@@ -36,7 +36,9 @@ export default function UserTable() {
 
     if (result.isConfirmed) {
       try {
-        await axios.delete(`http://localhost:3001/api/users/${id}`);
+        await axios.delete(
+          `https://backend-shape-explorer.vercel.app/api/users/${id}`
+        );
         setUsers((prev) => prev.filter((user) => user.id !== id));
         MySwal.fire("Berhasil!", "User telah dihapus.", "success");
       } catch (error) {
@@ -48,7 +50,9 @@ export default function UserTable() {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/api/users");
+      const response = await axios.get(
+        "https://backend-shape-explorer.vercel.app/api/users"
+      );
       const userArray = response.data.data ?? []; // ✅ akses response.data.data
       setUsers(userArray);
     } catch (error) {
