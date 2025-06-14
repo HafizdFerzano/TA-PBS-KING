@@ -100,10 +100,10 @@ export default function LearnSection() {
 
         {/* Audio Elements */}
 
-        <audio id="squareAudio" src="/sounds/test.mp3"></audio>
-        <audio id="triangleAudio" src="/sounds/test.mp3"></audio>
-        <audio id="circleAudio" src="/sounds/test.mp3"></audio>
-        <audio id="rectangleAudio" src="/sounds/test.mp3"></audio>
+        <audio id="squareAudio" src="/sounds/square.mp3"></audio>
+        <audio id="triangleAudio" src="/sounds/segitiga.mp3"></audio>
+        <audio id="circleAudio" src="/sounds/circle.mp3"></audio>
+        <audio id="rectangleAudio" src="/sounds/rectangle.mp3"></audio>
       </div>
     </section>
   );
