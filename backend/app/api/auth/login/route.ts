@@ -6,7 +6,7 @@ import { z } from "zod";
 
 const prisma = new PrismaClient();
 
-// Skema validasi input untuk anak SD
+// Validasi input sederhana
 const loginSchema = z.object({
   nama: z
     .string()
@@ -46,12 +46,12 @@ export async function POST(req: Request) {
 
     const { nama, password } = parsed.data;
 
-    // Cek apakah user ada di database
+    // Cari user
     const user = await prisma.user.findUnique({
       where: { nama },
     });
 
-    // Jika tidak ada user atau password salah
+    // Jika user tidak ditemukan atau password salah
     if (!user || !(await compare(password, user.password))) {
       return NextResponse.json(
         {
@@ -65,17 +65,19 @@ export async function POST(req: Request) {
       );
     }
 
-    // Buat token JWT
+    // Buat token
     const token = jwt.sign(
       {
         id: user.id,
         nama: user.nama,
+        role: user.role, // tetap disimpan di token
       },
       process.env.JWT_SECRET!,
       { expiresIn: "1d" }
     );
 
-    if (user.role == "admin") {
+    // Kondisi response berdasarkan role
+    if (user.role === "admin") {
       return NextResponse.json(
         {
           metadata: {
@@ -92,21 +94,20 @@ export async function POST(req: Request) {
       );
     }
 
+    // Untuk user biasa: tidak tampilkan role
     return NextResponse.json(
       {
         metadata: {
-          error: 1,
-          message: "Hak akses ditolak, Anda bukan Admin!",
-          status: 409,
+          error: 0,
+          message: "Login berhasil",
+          status: 200,
         },
         data: {
-          token
+          token,
         },
       },
-      { status: 409 }
+      { status: 200 }
     );
-
-    // Respon sukses
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json(
