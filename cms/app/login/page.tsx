@@ -92,14 +92,6 @@ export default function AdminLoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 relative px-4">
-      <Link
-        href="/"
-        className="absolute top-6 left-6 flex items-center bg-yellow-300 px-2 py-3 rounded-2xl text-white hover:text-yellow-800 transition-colors"
-      >
-        <ArrowLeft className="w-5 h-5 mr-1" />
-        Kembali
-      </Link>
-
       <div className="bg-gray-100 rounded-xl shadow-xl p-8 w-full max-w-md">
         <h1 className="text-3xl title-font text-center text-yellow-500 mb-6">
           Admin CMS Login

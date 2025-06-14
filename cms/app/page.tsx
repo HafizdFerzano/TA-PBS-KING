@@ -1,8 +1,9 @@
 import React from 'react'
+import AdminLoginPage from './login/page'
 
 function page() {
   return (
-    <div>TEST</div>
+    <AdminLoginPage/>
   )
 }
 
