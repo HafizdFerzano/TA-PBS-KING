@@ -60,7 +60,7 @@ export async function POST(req: Request) {
 
     const countUser = await db.user.findMany({});
 
-    if (countUser.length < 1) {
+    if (countUser.length < 2) {
       await db.user.createMany({
         data: [
           {
