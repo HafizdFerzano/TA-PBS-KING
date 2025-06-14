@@ -64,7 +64,7 @@ const ShapeManagementSystem = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        "http://localhost:3001/api/bangun-datar"
+        "https://backend-shape-explorer.vercel.app/api/bangun-datar"
       );
 
       if (response.data.metadata.error === 0) {
@@ -189,7 +189,7 @@ const ShapeManagementSystem = () => {
         }
 
         await axios.put(
-          `http://localhost:3001/api/bangun-datar/${currentShape.id}`,
+          `https://backend-shape-explorer.vercel.app/api/bangun-datar/${currentShape.id}`,
           formData,
           {
             headers: {
@@ -198,11 +198,15 @@ const ShapeManagementSystem = () => {
           }
         );
       } else {
-        await axios.post("http://localhost:3001/api/bangun-datar", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        await axios.post(
+          "https://backend-shape-explorer.vercel.app/api/bangun-datar",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
       }
 
       // Refresh shapes and reset form
@@ -219,7 +223,7 @@ const ShapeManagementSystem = () => {
 
     try {
       await axios.delete(
-        `http://localhost:3001/api/bangun-datar/${currentShape.id}`
+        `https://backend-shape-explorer.vercel.app/api/bangun-datar/${currentShape.id}`
       );
       fetchShapes();
       setShowModal(false);
