@@ -34,7 +34,7 @@ export default function LoginPage() {
 
       try {
         const response = await axios.post(
-          "http://localhost:3001/api/auth/login",
+          "https://backend-shape-explorer.vercel.app/api/auth/login",
           {
             nama: nama,
             password: password,

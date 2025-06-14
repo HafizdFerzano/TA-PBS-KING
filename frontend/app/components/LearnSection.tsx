@@ -24,7 +24,9 @@ export default function LearnSection() {
 
   const fetchShapes = async () => {
     try {
-      const res = await axios.get(`http://localhost:3001/api/bangun-datar`);
+      const res = await axios.get(
+        `https://backend-shape-explorer.vercel.app/api/bangun-datar`
+      );
       setShapes(res.data.data);
     } catch (err) {
       console.error("Gagal ambil data shapes:", err);
@@ -50,12 +52,10 @@ export default function LearnSection() {
         circle: "Circle: Round and smooth, no corners!",
         rectangle: "Rectangle: 4 sides, opposite sides equal!",
       };
-
     };
     setTimeout(() => setShow(true), 100); // delay kecil agar transisi smooth
   }, []);
   // })
-
 
   return (
     <section
@@ -100,22 +100,10 @@ export default function LearnSection() {
 
         {/* Audio Elements */}
 
-        <audio
-          id="squareAudio"
-          src="/sounds/test.mp3"
-        ></audio>
-        <audio
-          id="triangleAudio"
-          src="/sounds/test.mp3"
-        ></audio>
-        <audio
-          id="circleAudio"
-          src="/sounds/test.mp3"
-        ></audio>
-        <audio
-          id="rectangleAudio"
-          src="/sounds/test.mp3"
-        ></audio>
+        <audio id="squareAudio" src="/sounds/test.mp3"></audio>
+        <audio id="triangleAudio" src="/sounds/test.mp3"></audio>
+        <audio id="circleAudio" src="/sounds/test.mp3"></audio>
+        <audio id="rectangleAudio" src="/sounds/test.mp3"></audio>
       </div>
     </section>
   );
@@ -203,10 +191,8 @@ function ShapeCardTest({
       </div>
       {/* <p>wefasdfas</p> */}
       <button
-        className={
-          `mt-4 bg-${color}-500
-           hover:bg-${color}-600 text-white py-2 px-4 rounded-full text-sm transition-all`
-        }
+        className={`mt-4 bg-${color}-500
+           hover:bg-${color}-600 text-white py-2 px-4 rounded-full text-sm transition-all`}
         onClick={() => (window as any).playAudio(shape)}
       >
         <FontAwesomeIcon icon={faVolumeUp} className="w-6" /> Hear About {title}

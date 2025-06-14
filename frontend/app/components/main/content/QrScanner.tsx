@@ -18,7 +18,9 @@ function QrScanner() {
   const fetchQrAr = async () => {
     const path = "qr-ar";
     try {
-      const res = await axios.get(`http://localhost:3001/api/${path}`);
+      const res = await axios.get(
+        `https://backend-shape-explorer.vercel.app/api/${path}`
+      );
       setQr(res.data.data);
     } catch (error: unknown) {
       console.error("Gagal ambil data qr:", error);
