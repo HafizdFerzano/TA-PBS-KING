@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   // Rute yang butuh proteksi token
-  const protectedPaths = [ "/api/dashboard", "/api/admin"];
+  const protectedPaths = ["/api/dashboard", "/api/admin"];
 
   // Setup CORS
   const headers = new Headers();
@@ -13,7 +13,8 @@ export function middleware(request: NextRequest) {
   const allowedOrigins = [
     "http://localhost:3000",
     "http://localhost:3001",
-    "http://localhost:3002",
+    "https://shape-explorer-king.vercel.app",
+    "https://shape-explorer-cms.vercel.app",
   ];
 
   if (origin && allowedOrigins.includes(origin)) {
